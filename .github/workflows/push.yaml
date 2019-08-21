@@ -1,0 +1,28 @@
+name: Upload
+
+on: [push]
+
+jobs:
+  upload:
+    name: Upload to PyPi
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if tag was pushed
+        uses: actions/bin/filter@master
+        with:
+          args: 'tag'
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.7
+      - name: Install dependencies
+        run: pip install -U pip && pip install -U twine setuptools wheel
+      - name: Build dist files
+        run: python setup.py sdist bdist_wheel
+      - name: Upload
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.TWINE_TOKEN }}
+        run: twine upload dist/*
