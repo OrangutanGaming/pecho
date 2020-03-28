@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2019 Nihaal Sangha
+# Copyright (c) 2019-2020 Nihaal Sangha
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -20,15 +20,17 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from importlib.metadata import version as _version
+
 import colorama
 
 colorama.init()
 
 __all__ = ['echo']
-__version__ = '0.1.0'
+__version__ = _version('pecho')
 
 
-def echo(*objects, sep=' ', end='', file=None, flush=True, newline=False, print_func=print):
+def echo(*objects, sep=' ', end='', file=None, flush=True, newline=False, print_func=print, **print_kwargs):
     if objects:
         objects = ('\r' + str(objects[0]),) + objects[1:]
 
@@ -37,4 +39,4 @@ def echo(*objects, sep=' ', end='', file=None, flush=True, newline=False, print_
     if newline:
         end += '\n'
 
-    print_func(*objects, sep=sep, end=end, file=file, flush=flush)
+    print_func(*objects, sep=sep, end=end, file=file, flush=flush, **print_kwargs)
