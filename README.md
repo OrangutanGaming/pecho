@@ -1,4 +1,8 @@
 # pecho
+[![PyPI](https://img.shields.io/pypi/v/pecho)](https://pypi.org/project/pecho/)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pecho)
+![PyPI - Wheel](https://img.shields.io/pypi/wheel/pecho)
+
 Pecho makes it easy to write things like status bars.
 
 ## Usage
