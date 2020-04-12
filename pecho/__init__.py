@@ -30,7 +30,7 @@ __all__ = ['echo']
 __version__ = _version('pecho')
 
 
-def echo(*objects, newline=False, end='', pass_end=False, str_convert_func=str, print_func=print, **print_kwargs):
+def echo(*objects, newline=False, end='', str_convert_func=str, print_func=print, _={}, **print_kwargs):
     if objects:
         objects = ('\r' + str_convert_func(objects[0]),) + objects[1:]
     else:
@@ -41,12 +41,11 @@ def echo(*objects, newline=False, end='', pass_end=False, str_convert_func=str, 
     if newline:
         end += '\n'
 
-    force_pass_end = print_func == print
+    objects = objects[:-1] + (str_convert_func(objects[-1]) + end,)
 
-    if pass_end is False or force_pass_end is True:
-        objects = objects[:-1] + (str_convert_func(objects[-1]) + end,)
-        end = ''  # Sets end for print()
-    if pass_end is True or force_pass_end is True:
-        print_kwargs['end'] = end
+    print_kwargs.update(_)
+
+    if print_func == print:
+        print_kwargs['end'] = ''
 
     return print_func(*objects, **print_kwargs)
