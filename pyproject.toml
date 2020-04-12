@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pecho"
-version = "0.2.1"
+version = "0.3.0"
 description = "Easy way to write things like status bars"
 authors = ["Nihaal Sangha <18350092+OrangutanGaming@users.noreply.github.com>"]
 license = "MIT"
