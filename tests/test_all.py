@@ -7,11 +7,11 @@ from pecho import echo as pecho
 def test_print_function():
     f = io.StringIO()
     with redirect_stdout(f):
-        echo('1', end='%')
-        echo('2%')
-        echo('3%', newline=True)
-        echo('4%')
-        echo(newline=True)
+        pecho('1', end='%')
+        pecho('2%')
+        pecho('3%', newline=True)
+        pecho('4%')
+        pecho(newline=True)
         print('Done')
     out = f.getvalue()
     assert out == '\r\033[K1%\r\033[K2%\r\033[K3%\n\r\033[K4%\r\033[K\nDone\n'
@@ -21,7 +21,7 @@ def custom_print(*args, **kwargs):
     return print(*args, **kwargs)
 
 
-def echo(*args, **kwargs):
+def pecho_custom_print(*args, **kwargs):
     kwargs['print_func'] = custom_print
     kwargs.setdefault('print_func_kwargs', {})
     kwargs['print_func_kwargs']['end'] = ''
@@ -31,11 +31,11 @@ def echo(*args, **kwargs):
 def test_custom_print_function():
     f = io.StringIO()
     with redirect_stdout(f):
-        echo('1', end='%')
-        echo('2%')
-        echo('3%', newline=True)
-        echo('4%')
-        echo(newline=True)
+        pecho_custom_print('1', end='%')
+        pecho_custom_print('2%')
+        pecho_custom_print('3%', newline=True)
+        pecho_custom_print('4%')
+        pecho_custom_print(newline=True)
         print('Done')
     out = f.getvalue()
     assert out == '\r\033[K1%\r\033[K2%\r\033[K3%\n\r\033[K4%\r\033[K\nDone\n'
