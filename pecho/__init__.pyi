@@ -1,14 +1,51 @@
-from typing import Any, Callable, Dict, List, TextIO
+import sys
+from typing import Any, Callable, Dict, List, Optional, Protocol, TextIO, TypeVar, Union, overload
 
 __all__: List[str]
-__version__: str
 
+if sys.version_info >= (3, 8):
+    __version__: str
+else:
+    __version__ = None
+
+# *objects, newline=False, newline_char='\n', end='', print_func=print, print_func_kwargs={}
+class SupportsStr(Protocol):
+    def __str__(self) -> str: ...
+
+class SupportsRepr(Protocol):
+    def __repr__(self) -> str: ...
+
+PrintFuncArg = TypeVar('PrintFuncArg')
+PrintFuncReturn = TypeVar('PrintFuncReturn')
+
+class PrintFuncText(Protocol):
+    def __call__(self, __text: PrintFuncArg, *__args: Any, **__kwargs: Any) -> PrintFuncReturn: ...
+
+class PrintFuncObjects(Protocol):
+    def __call__(self, *__objects: PrintFuncArg, **__kwargs: Any) -> PrintFuncReturn: ...
+
+@overload
 def echo(
-    *objects: Any,
-    newline: bool = False,
-    end: str = '',
-    str_convert_func: Callable = str,
-    print_func: Callable = print,
-    _: Dict[str, str] = {},
-    **print_kwargs: Any,
-): ...
+    __text: PrintFuncArg,
+    newline: bool = ...,
+    newline_char: str = ...,
+    end: str = ...,
+    print_func: PrintFuncText = ...,
+    print_func_kwargs: Dict[str, Any] = ...,
+) -> PrintFuncReturn: ...
+@overload
+def echo(
+    *objects: PrintFuncArg,
+    newline: bool = ...,
+    newline_char: str = ...,
+    end: str = ...,
+    print_func_kwargs: Dict[str, Any] = ...,
+) -> PrintFuncReturn: ...
+def echo(
+    *objects: PrintFuncArg,
+    newline: bool = ...,
+    newline_char: str = ...,
+    end: str = ...,
+    print_func: PrintFuncObjects = ...,
+    print_func_kwargs: Dict[str, Any] = ...,
+) -> PrintFuncReturn: ...

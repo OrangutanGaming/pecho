@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pecho"
-version = "0.4.0"
+version = "0.5.0"
 description = "Easy way to write things like status bars"
 authors = ["Nihaal Sangha <me@niha.al>"]
 license = "MIT"
@@ -9,8 +9,11 @@ readme = "README.md"
 repository = "https://github.com/nihaals/pecho"
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.5"
 colorama = "^0.4.3"
+
+[tool.poetry.extras]
+windows = ["colorama"]
 
 [tool.poetry.dev-dependencies]
 black = "^19.10b0"
@@ -20,7 +23,7 @@ pytest-cov = "^2.8.1"
 
 [tool.black]
 line-length = 120
-target-version = ['py38']
+target-version = ['py35', 'py36', 'py37', 'py38']
 skip-string-normalization = true
 include = '\.pyi?$'
 

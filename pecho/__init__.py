@@ -20,32 +20,51 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from importlib.metadata import version as _version
+try:
+    from importlib.metadata import version as _version
+except ModuleNotFoundError:
+    _version = lambda _: None
 
-import colorama
+try:
+    import colorama as _colorama
+except ImportError:
+    _colorama = None
+if _colorama is not None:
+    _colorama.init()
 
-colorama.init()
+try:
+    from click import echo as _click_echo
+except ImportError:
+    _click_echo = None
 
-__all__ = ['echo']
+__all__ = ['echo', 'CLEAR_LINE']
 __version__ = _version('pecho')
 
+START_OF_LINE = '\r'
+CLEAR_LINE = '\033[K'
 
-def echo(*objects, newline=False, end='', str_convert_func=str, print_func=print, _={}, **print_kwargs):
+_sentinel = object()
+
+
+def echo(*objects, newline=False, newline_char='\n', end='', print_func=print, print_func_kwargs=_sentinel):
+    if print_func_kwargs is _sentinel:
+        print_func_kwargs = {}
+
     if objects:
-        objects = ('\r' + str_convert_func(objects[0]),) + objects[1:]
+        objects = (START_OF_LINE + CLEAR_LINE + str(objects[0]),) + objects[1:]
     else:
-        objects = ('\r',)
+        objects = (START_OF_LINE + CLEAR_LINE,)
 
-    end += '\033[K'
+    if newline is True:
+        end += newline_char
 
-    if newline:
-        end += '\n'
-
-    objects = objects[:-1] + (str_convert_func(objects[-1]) + end,)
-
-    print_kwargs.update(_)
+    if end:
+        objects = objects[:-1] + (str(objects[-1]) + end,)
 
     if print_func == print:
-        print_kwargs['end'] = ''
+        print_func_kwargs['end'] = ''
+    elif print_func == _click_echo:
+        # Can ignore `print_func is None` as print_func() will error
+        print_func_kwargs['nl'] = False
 
-    return print_func(*objects, **print_kwargs)
+    return print_func(*objects, **print_func_kwargs)
