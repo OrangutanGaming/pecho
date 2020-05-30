@@ -10,7 +10,7 @@ repository = "https://github.com/nihaals/pecho"
 
 [tool.poetry.dependencies]
 python = "^3.6"
-colorama = "^0.4.3"
+colorama = { version = "^0.4.3", optional = true}
 
 [tool.poetry.extras]
 windows = ["colorama"]
@@ -23,7 +23,7 @@ pytest-cov = "^2.8.1"
 
 [tool.black]
 line-length = 120
-target-version = ['py35', 'py36', 'py37', 'py38']
+target-version = ['py36', 'py37', 'py38']
 skip-string-normalization = true
 include = '\.pyi?$'
 
