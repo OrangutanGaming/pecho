@@ -22,12 +22,12 @@
 
 try:
     from importlib.metadata import version as _version
-except ModuleNotFoundError:
+except ModuleNotFoundError:  # pragma: no cover
     _version = lambda _: None
 
 try:
     import colorama as _colorama
-except ImportError:
+except ImportError:  # pragma: no cover
     _colorama = None
 if _colorama is not None:
     _colorama.init()
