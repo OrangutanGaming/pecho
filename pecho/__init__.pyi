@@ -8,13 +8,6 @@ if sys.version_info >= (3, 8):
 else:
     __version__ = None
 
-# *objects, newline=False, newline_char='\n', end='', print_func=print, print_func_kwargs={}
-class SupportsStr(Protocol):
-    def __str__(self) -> str: ...
-
-class SupportsRepr(Protocol):
-    def __repr__(self) -> str: ...
-
 PrintFuncArg = TypeVar('PrintFuncArg')
 PrintFuncReturn = TypeVar('PrintFuncReturn')
 
