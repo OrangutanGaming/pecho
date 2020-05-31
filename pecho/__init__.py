@@ -22,7 +22,7 @@
 
 try:
     from importlib.metadata import version as _version
-except ModuleNotFoundError:  # pragma: no cover
+except ModuleNotFoundError:
     _version = lambda _: None
 
 try:
@@ -34,7 +34,7 @@ if _colorama is not None:
 
 try:
     from click import echo as _click_echo
-except ImportError:
+except ImportError:  # pragma: no cover
     _click_echo = None
 
 __all__ = ['echo', 'CLEAR_LINE']
