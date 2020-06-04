@@ -3,42 +3,44 @@ from typing import Any, Callable, Dict, List, Optional, Protocol, TextIO, TypeVa
 
 __all__: List[str]
 
-if sys.version_info >= (3, 8):
-    __version__: str
+try:
+    import importlib.metadata
+except ImportError:
+    __version__: None
 else:
-    __version__ = None
+    __version__: str
 
-PrintFuncArg = TypeVar('PrintFuncArg')
-PrintFuncReturn = TypeVar('PrintFuncReturn')
+_PrintFuncArg = TypeVar('_PrintFuncArg')
+_PrintFuncReturn = TypeVar('_PrintFuncReturn')
 
 class PrintFuncText(Protocol):
-    def __call__(self, __text: PrintFuncArg, *__args: Any, **__kwargs: Any) -> PrintFuncReturn: ...
+    def __call__(self, __text: _PrintFuncArg, *__args: Any, **__kwargs: Any) -> _PrintFuncReturn: ...
 
 class PrintFuncObjects(Protocol):
-    def __call__(self, *__objects: PrintFuncArg, **__kwargs: Any) -> PrintFuncReturn: ...
+    def __call__(self, *__objects: _PrintFuncArg, **__kwargs: Any) -> _PrintFuncReturn: ...
 
 @overload
 def echo(
-    __text: PrintFuncArg,
+    __text: _PrintFuncArg,
     newline: bool = ...,
     newline_char: str = ...,
     end: str = ...,
     print_func: PrintFuncText = ...,
     print_func_kwargs: Dict[str, Any] = ...,
-) -> PrintFuncReturn: ...
+) -> _PrintFuncReturn: ...
 @overload
 def echo(
-    *objects: PrintFuncArg,
+    *objects: _PrintFuncArg,
     newline: bool = ...,
     newline_char: str = ...,
     end: str = ...,
     print_func_kwargs: Dict[str, Any] = ...,
-) -> PrintFuncReturn: ...
+) -> _PrintFuncReturn: ...
 def echo(
-    *objects: PrintFuncArg,
+    *objects: _PrintFuncArg,
     newline: bool = ...,
     newline_char: str = ...,
     end: str = ...,
     print_func: PrintFuncObjects = ...,
     print_func_kwargs: Dict[str, Any] = ...,
-) -> PrintFuncReturn: ...
+) -> _PrintFuncReturn: ...
