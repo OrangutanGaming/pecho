@@ -1,5 +1,4 @@
-import sys
-from typing import Any, Callable, Dict, List, Optional, Protocol, TextIO, TypeVar, Union, overload
+from typing import Any, Dict, List, Protocol, TypeVar, overload
 
 __all__: List[str]
 
