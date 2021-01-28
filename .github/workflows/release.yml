@@ -10,27 +10,28 @@ jobs:
     name: Release
     runs-on: ubuntu-latest
     env:
-      python-version: '3.8'
+      python-version: '3.9'
     steps:
       - uses: actions/checkout@v2
       - name: Get tag
         id: tag
         run: echo ::set-output name=tag::${GITHUB_REF#refs/tags/}
-      - name: Set up Python ${{ env.python-version }}
-        uses: actions/setup-python@v1
+      - name: Set up Python ${{ matrix.python-version }}
+        id: setup-python
+        uses: actions/setup-python@v2
         with:
-          python-version: ${{ env.python-version }}
-      - name: Get Python version
-        id: python-version
-        run: |
-          echo ::set-output name=version::$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")
+          python-version: ${{ matrix.python-version }}
       - name: Install Poetry
-        uses: dschep/install-poetry-action@v1.3
-        with:
-          create_virtualenvs: 'true'
+        uses: Gr1N/setup-poetry@v4
       - name: Set Poetry config
         run: |
           poetry config virtualenvs.in-project true
+      - name: Cache Poetry virtualenv
+        uses: actions/cache@v2
+        id: cache
+        with:
+          path: .venv
+          key: poetry-venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}
       - name: Get package version
         id: package-version
         run: echo ::set-output name=version::$(poetry version | grep -Po "\d+\.\d+\.\d+$")
@@ -41,12 +42,6 @@ jobs:
           echo Package version: ${{ steps.package-version.outputs.version }}
           echo Tag and package version do not match
           exit 1
-      - name: Cache Poetry virtualenv
-        uses: actions/cache@v1
-        id: cache
-        with:
-          path: .venv
-          key: poetry-venv-${{ runner.os }}-${{ steps.python-version.outputs.version }}
       - name: Install/update package and dependencies
         run: poetry install
       - name: Create release ${{ steps.tag.outputs.tag }}
