@@ -1,6 +1,6 @@
 # pecho
 [![Tests](https://github.com/nihaals/pecho/workflows/Tests/badge.svg)](https://github.com/nihaals/pecho/actions?query=workflow%3ATests)
-[![codecov](https://codecov.io/gh/nihaals/pecho/branch/master/graph/badge.svg)](https://codecov.io/gh/nihaals/pecho)
+[![codecov](https://codecov.io/gh/nihaals/pecho/branch/main/graph/badge.svg)](https://codecov.io/gh/nihaals/pecho)
 [![PyPI](https://img.shields.io/pypi/v/pecho)](https://pypi.org/project/pecho/)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pecho)](https://pypi.org/project/pecho/)
 [![PyPI - Wheel](https://img.shields.io/pypi/wheel/pecho)](https://pypi.org/project/pecho/)
