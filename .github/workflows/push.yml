@@ -11,6 +11,7 @@ on:
 jobs:
   test:
     name: Test
+    if: github.event_name != 'pull_request' || (github.event_name == 'pull_request' && github.event.base.repo.id != github.event.head.repo.id)
     runs-on: ubuntu-latest
     strategy:
       matrix:
