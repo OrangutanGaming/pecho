@@ -31,7 +31,9 @@ jobs:
         id: cache
         with:
           path: .venv
-          key: poetry-venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}
+          key: poetry-venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('poetry.lock') }}
+          restore-keys: |
+            poetry-venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-
       - name: Get package version
         id: package-version
         run: echo ::set-output name=version::$(poetry version | grep -Po "\d+\.\d+\.\d+$")

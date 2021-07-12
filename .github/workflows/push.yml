@@ -32,7 +32,9 @@ jobs:
         id: cache
         with:
           path: .venv
-          key: poetry-venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}
+          key: poetry-venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('poetry.lock') }}
+          restore-keys: |
+            poetry-venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-
       - name: Install/update package and dependencies
         run: poetry install
       - name: Test with Pytest and measure coverage
